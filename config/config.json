@@ -5,10 +5,7 @@
     "database": "todo_app",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "operatorsAliases": false,
-    "define": {
-      "underscored": true
-    }
+    "operatorsAliases": false
   },
   "test": {
     "username": "root",
