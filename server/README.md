@@ -88,7 +88,9 @@ _Response (400 - Bad Request)_
 _Response (422 - Unprocessable Entity)_
 
 ```
-  "<returned error message>"
+{
+  "message": "<returned error message>"
+}
 ```
 
 _Response (500 - Internal Server Error)_
