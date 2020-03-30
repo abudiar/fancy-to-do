@@ -6,8 +6,6 @@ class TodosController {
     static insertOne(req, res) {
         try {
             const { title, description, status, due_date } = req.body;
-            if (title === undefined || description === undefined || status === undefined || due_date === undefined)
-                throw new Error('Invalid parameters');
             Todo.build(
                 { title, description, status, due_date }
             )
@@ -16,16 +14,16 @@ class TodosController {
                     res.status(201).json(data);
                 })
                 .catch(err => {
-                    if (err.message === 'Validation error')
-                        res.status(400).json(err.message);
+                    if (err.name === 'SequelizeValidationError')
+                        res.status(400).json(err);
                     else
-                        throw err;
+                        res.status(500).json(err);
                 })
         } catch (err) {
             if (err.message === 'Invalid parameters')
-                res.status(422).json(err.message);
+                res.status(422).json({ "message": err.message });
             else
-                res.status(500).json(err.message);
+                res.status(500).json(err);
         }
     }
 
@@ -37,7 +35,7 @@ class TodosController {
             })
             .catch(err => {
                 console.log(err);
-                res.status(500).json(err.message);
+                res.status(500).json(err);
             });
     }
 
@@ -57,13 +55,16 @@ class TodosController {
                     res.status(200).json(data);
                 })
                 .catch(err => {
-                    res.status(404).json(err.message);
+                    if (err.message.includes('not found'))
+                        res.status(404).json({ "message": err.message });
+                    else
+                        res.status(500).json(err);
                 });
         } catch (err) {
             if (err.message === 'Invalid parameters')
-                res.status(422).json(err.message);
+                res.status(422).json({ "message": err.message });
             else
-                res.status(500).json(err.message);
+                res.status(500).json(err);
         }
     }
 
@@ -72,7 +73,7 @@ class TodosController {
         try {
             const { id } = req.params,
                 { title, description, status, due_date } = req.body;
-            if (id === undefined || title === undefined || description === undefined || status === undefined || due_date === undefined)
+            if (id === undefined)
                 throw new Error('Invalid parameters');
             Todo.findOne({
                 where: { id }
@@ -90,22 +91,25 @@ class TodosController {
                     );
                 })
                 .catch(err => {
-                    res.status(404).json(err.message);
+                    if (err.message.includes('not found'))
+                        res.status(404).json({ "message": err.message });
+                    else
+                        res.status(500).json(err);
                 })
                 .then(data => {
                     res.status(200).json(data);
                 })
                 .catch(err => {
                     if (err.name === 'SequelizeValidationError')
-                        res.status(400).json(err.message);
+                        res.status(400).json(err);
                     else
                         throw err;
                 });
         } catch (err) {
             if (err.message === 'Invalid parameters')
-                res.status(422).json(err.message);
+                res.status(422).json({ "message": err.message });
             else
-                res.status(500).json(err.message);
+                res.status(500).json(err);
         }
     }
 
@@ -130,7 +134,7 @@ class TodosController {
                     });
                 })
                 .catch(err => {
-                    res.status(404).json(err.message);
+                    res.status(404).json({ "message": err.message });
                 })
                 .then(data => {
                     res.status(200).json(destroyData);
@@ -140,9 +144,9 @@ class TodosController {
                 });
         } catch (err) {
             if (err.message === 'Invalid parameters')
-                res.status(422).json(err.message);
+                res.status(422).json({ "message": err.message });
             else
-                res.status(500).json(err.message);
+                res.status(500).json(err);
         }
     }
 }

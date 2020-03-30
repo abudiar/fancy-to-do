@@ -47,7 +47,42 @@ _Response (201 - Created)_
 _Response (400 - Bad Request)_
 
 ```
-  "<returned error message>"
+{
+    "name": "SequelizeValidationError",
+    "errors": [
+        {
+            "message": "Due date must be a date",
+            "type": "Validation error",
+            "path": "due_date",
+            "value": null,
+            "origin": "FUNCTION",
+            "instance": {
+                "id": null,
+                "title": "Is it me your looking for",
+                "description": "I can see it in your eyes",
+                "status": "deep inside you wanna cry",
+                "due_date": null,
+                "updatedAt": "2020-03-30T15:14:23.423Z",
+                "createdAt": "2020-03-30T15:14:23.423Z"
+            },
+            "validatorKey": "isDate",
+            "validatorName": "isDate",
+            "validatorArgs": [
+                {
+                    "msg": "Due date must be a date"
+                }
+            ],
+            "original": {
+                "validatorName": "isDate",
+                "validatorArgs": [
+                    {
+                        "msg": "Due date must be a date"
+                    }
+                ]
+            }
+        }
+    ]
+}
 ```
 
 _Response (422 - Unprocessable Entity)_
@@ -59,7 +94,27 @@ _Response (422 - Unprocessable Entity)_
 _Response (500 - Internal Server Error)_
 
 ```
-  "<returned error message>"
+{
+  "name": "SequelizeConnectionError",
+  "parent": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  },
+  "original": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  }
+}
 ```
 
 ---
@@ -108,7 +163,27 @@ _Response (200)_
 _Response (500 - Internal Server Error)_
 
 ```
-  "<returned error message>"
+{
+  "name": "SequelizeConnectionError",
+  "parent": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  },
+  "original": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  }
+}
 ```
 
 ---
@@ -146,19 +221,43 @@ _Response (200)_
 _Response (404 - Not Found)_
 
 ```
-  "<returned error message>"
+{
+  "message": "<returned error message>"
+}
 ```
 
 _Response (422 - Unprocessable Entity)_
 
 ```
-  "<returned error message>"
+{
+  "message": "<returned error message>"
+}
 ```
 
 _Response (500 - Internal Server Error)_
 
 ```
-  "<returned error message>"
+{
+  "name": "SequelizeConnectionError",
+  "parent": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  },
+  "original": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  }
+}
 ```
 
 ---
@@ -201,25 +300,84 @@ _Response (200)_
 _Response (400 - Bad Request)_
 
 ```
-  "<returned error message>"
+{
+    "name": "SequelizeValidationError",
+    "errors": [
+        {
+            "message": "Due date must be a date",
+            "type": "Validation error",
+            "path": "due_date",
+            "value": null,
+            "origin": "FUNCTION",
+            "instance": {
+                "id": null,
+                "title": "Is it me your looking for",
+                "description": "I can see it in your eyes",
+                "status": "deep inside you wanna cry",
+                "due_date": null,
+                "updatedAt": "2020-03-30T15:14:23.423Z",
+                "createdAt": "2020-03-30T15:14:23.423Z"
+            },
+            "validatorKey": "isDate",
+            "validatorName": "isDate",
+            "validatorArgs": [
+                {
+                    "msg": "Due date must be a date"
+                }
+            ],
+            "original": {
+                "validatorName": "isDate",
+                "validatorArgs": [
+                    {
+                        "msg": "Due date must be a date"
+                    }
+                ]
+            }
+        }
+    ]
+}
 ```
 
 _Response (404 - Not Found)_
 
 ```
-  "<returned error message>"
+{
+  "message": "<returned error message>"
+}
 ```
 
 _Response (422 - Unprocessable Entity)_
 
 ```
-  "<returned error message>"
+{
+  "message": "<returned error message>"
+}
 ```
 
 _Response (500 - Internal Server Error)_
 
 ```
-  "<returned error message>"
+{
+  "name": "SequelizeConnectionError",
+  "parent": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  },
+  "original": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  }
+}
 ```
 
 ---
@@ -257,17 +415,41 @@ _Response (200)_
 _Response (404 - Not Found)_
 
 ```
-  "<returned error message>"
+{
+  "message": "<returned error message>"
+}
 ```
 
 _Response (422 - Unprocessable Entity)_
 
 ```
-  "<returned error message>"
+{
+  "message": "<returned error message>"
+}
 ```
 
 _Response (500 - Internal Server Error)_
 
 ```
-  "<returned error message>"
+{
+  "name": "SequelizeConnectionError",
+  "parent": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  },
+  "original": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  }
+}
 ```
