@@ -7,7 +7,7 @@ router.use('/', require('./index'));
 router.use('/todos', require('./todos'));
 
 // Setup 404 handler
-router.use((req, res) => {
+router.use('*', (req, res) => {
     res.status(404).json('ERROR: Not Found');
 })
 
