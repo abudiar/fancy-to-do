@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const Controller = require('../controllers/todos_controller');
+const TodosController = require('../controllers/todos_controller');
 
 // Methods
-router.post(`/`, Controller.insertOne);
-router.get(`/`, Controller.getAll);
-router.get(`/:id`, Controller.getOne);
-router.put(`/:id`, Controller.updateOne);
-router.delete(`/:id`, Controller.deleteOne);
+router.post(`/`, TodosController.insertOne);
+router.get(`/`, TodosController.findAll);
+router.get(`/:id`, TodosController.findOne);
+router.put(`/:id`, TodosController.updateOne);
+router.delete(`/:id`, TodosController.deleteOne);
 
 module.exports = router;
