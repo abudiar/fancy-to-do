@@ -5,9 +5,12 @@ class TodosController {
 
     // Insert one Todo
     static insertOne(req, res, next) {
-        const { title, description, status, due_date } = req.body;
+        const {
+            decodedToken: { UserId },
+            body: { title, description, status, due_date }
+        } = req;
         Todo.build(
-            { title, description, status, due_date }
+            { title, description, status, due_date, UserId }
         )
             .save()
             .then(data => {
@@ -18,7 +21,8 @@ class TodosController {
 
     // Get all the Todos
     static findAll(req, res, next) {
-        Todo.findAll()
+        const { decodedToken: { UserId } } = req;
+        Todo.findAll({ where: { UserId } })
             .then(data => {
                 res.status(200).json(data);
             })
@@ -27,7 +31,10 @@ class TodosController {
 
     // Get one Todo
     static findOne(req, res, next) {
-        const { id } = req.params;
+        const {
+            // decodedToken: { UserId },
+            params: { id }
+        } = req;
         Todo.findOne({
             where: { id }
         })
@@ -45,8 +52,11 @@ class TodosController {
 
     // Update one Todo
     static updateOne(req, res, next) {
-        const { id } = req.params,
-            { title, description, status, due_date } = req.body;
+        const {
+            // decodedToken: { UserId },
+            params: { id },
+            body: { title, description, status, due_date }
+        } = req;
         Todo.findOne({
             where: { id }
         })
@@ -73,7 +83,10 @@ class TodosController {
 
     // Delete one Todo
     static deleteOne(req, res, next) {
-        const { id } = req.params;
+        const {
+            // decodedToken: { UserId },
+            params: { id }
+        } = req;
         let destroyData;
         Todo.findOne({
             where: { id }
