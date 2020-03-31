@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const TodosController = require('../controllers/todos_controller');
+const { TodosController } = require('../controllers');
 
 // Methods
 router.post(`/`, TodosController.insertOne);
