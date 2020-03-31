@@ -1,13 +1,32 @@
 class WebError extends Error {
-    constructor({ title, status, message }) {
+    constructor({ name, status, message, err }) {
         super(message)
-        this.title = title;
+        this.name = name;
         this.status = status;
+        this.err = err;
     }
 
-    static ErrorHandler(err, req, res, next) {
+    get Error() {
+        if (this.err)
+            return this.err;
+        else
+            return {
+                name: this.name,
+                message: this.message
+            }
+    }
+
+    static errorHandler(err, req, res, next) {
         console.error(err.stack);
-        res.status(err.status || 500).json(err);
+        switch (err.name) {
+            case 'SequelizeValidationError':
+                res.status(400).json(err);
+                break;
+
+            default:
+                res.status(err.status || 500).json(err.Error || err);
+                break;
+        }
     }
 }
 

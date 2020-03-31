@@ -1,10 +1,16 @@
 const router = require('express').Router();
 
 // Main index page
-router.use('/', require('./indexRoute'));
+router.use('/', require('./indexRoutes'));
 
 // Todos app page
-router.use('/todos', require('./todosRoute'));
+router.use('/todos', require('./todosRoutes'));
+
+// User page
+router.use('/', require('./userRoutes'));
+
+// User page
+router.use('/test', require('../middleware/auth').authenticate);
 
 // Setup 404 handler
 router.use('*', (req, res) => {

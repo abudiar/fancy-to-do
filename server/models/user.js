@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       allowNull: false,
       type: DataTypes.STRING,
-      unique: true,
       validate: {
         notEmpty: {
           msg: "Username cannot be empty"
