@@ -11,7 +11,7 @@ Todos App is an application to hold all your todos needs. This application has :
 
 ### POST /register
 
-> Create new todo
+> Create new user
 
 _Request Header_
 
@@ -111,7 +111,7 @@ _Response (500 - Internal Server Error)_
 
 ### POST /login
 
-> Create new todo
+> Login to user
 
 _Request Header_
 
@@ -649,6 +649,109 @@ _Response (200)_
   "due_date": <posted due date>,
   "createdAt": "2020-03-20T07:15:12.149Z",
   "updatedAt": "2020-03-20T07:15:12.149Z",
+}
+```
+
+_Response (400 - Bad Request)_
+
+```
+{
+  "name": "TokenNull",
+  "message": "Token is missing."
+}
+```
+
+_Response (401 - Not Found)_
+
+```
+{
+  "name": "AuthorizationError",
+  "message": "You do not have the required permissions!"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+  "name": "<returned error name>",
+  "message": "<returned error message>"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  "name": "SequelizeConnectionError",
+  "parent": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  },
+  "original": {
+      "name": "error",
+      "length": 167,
+      "severity": "FATAL",
+      "code": "28P01",
+      "file": "d:\\pginstaller_12.auto\\postgres.windows-x64\\src\\backend\\libpq\\auth.c",
+      "line": "333",
+      "routine": "auth_failed"
+  }
+}
+```
+
+---
+
+### GET /todos/translate/:id
+
+> Translates one todo
+
+_Request Query Params_
+
+```
+{
+  "translateFrom": <ID of language to translate from> (defaults to auto-translate - auto)
+  "translateTo": <ID of language to translate to> (defaults to english - en)
+}
+```
+
+_Request Header_
+
+```
+{
+  "accessToken": <accessToken from login>
+}
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+  "parameters": {
+    "from": "auto",
+    "to": "ru"
+  },
+  "original": {
+    "title": "Ayo kita test translasi ini!",
+    "description": "Halo nama aku alan, nama kamu apa?",
+    "status": "Coba aja deh"
+  },
+  "translated": {
+    "title": "Давайте проверим этот перевод!",
+    "description": "Здравствуйте, меня зовут Алан, как вас зовут?",
+    "status": "Просто попробуйте"
+  }
 }
 ```
 

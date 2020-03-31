@@ -1,5 +1,7 @@
 const { Todo } = require('../models');
 const { WebError } = require('../middleware');
+const axios = require('axios');
+const queryString = require('query-string');
 
 class TodosController {
 
@@ -109,6 +111,50 @@ class TodosController {
                 res.status(200).json(destroyData);
             })
             .catch(next);
+    }
+
+    static translate(req, res, next) {
+        const {
+            params: { id }, query: { translateFrom = 'auto', translateTo = 'en' }
+        } = req;
+        Todo.findOne({
+            where: { id }
+        })
+            .then(data => {
+                if (data == null)
+                    throw new WebError({
+                        name: 'ItemNotFound',
+                        status: 404,
+                        message: 'Post with id ' + id + ' not found.'
+                    });
+                const { title, description, status } = data;
+                const translateParams = {
+                    client: 'gtx',
+                    sl: translateFrom,
+                    tl: translateTo,
+                    dt: 't',
+                    q: JSON.stringify({ title, description, status })
+                }
+                const stringified = queryString.stringify(translateParams);
+                return axios({
+                    method: 'get',
+                    url: 'https://translate.googleapis.com/translate_a/single?' + stringified,
+                })
+            })
+            .then(function (response) {
+                const original = JSON.parse(response.data[0][0][1]);
+                const translated = JSON.parse(response.data[0][0][0]);
+                const result = {
+                    parameters: {
+                        from: translateFrom,
+                        to: translateTo
+                    },
+                    original,
+                    translated
+                }
+                res.status(200).json(result);
+            })
+            .catch(next)
     }
 }
 
