@@ -45,7 +45,7 @@ class UserController {
             })
             .then(success => {
                 if (success)
-                    res.status(200).json({
+                    res.status(201).json({
                         accessToken: jwt.sign({
                             UserId: userData.id,
                             username: userData.username
