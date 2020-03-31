@@ -142,17 +142,25 @@ class TodosController {
                 })
             })
             .then(function (response) {
-                const original = JSON.parse(response.data[0][0][1]);
-                const translated = JSON.parse(response.data[0][0][0]);
-                const result = {
-                    parameters: {
-                        from: translateFrom,
-                        to: translateTo
-                    },
-                    original,
-                    translated
+                try {
+                    const original = JSON.parse(response.data[0][0][1]);
+                    const translated = JSON.parse(response.data[0][0][0]);
+                    const result = {
+                        parameters: {
+                            from: translateFrom,
+                            to: translateTo
+                        },
+                        original,
+                        translated
+                    }
+                    res.status(200).json(result);
+                } catch (err) {
+                    throw new WebError({
+                        name: 'TranslationError',
+                        status: 500,
+                        message: err.message
+                    });
                 }
-                res.status(200).json(result);
             })
             .catch(next)
     }
