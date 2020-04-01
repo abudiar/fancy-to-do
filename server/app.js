@@ -10,7 +10,7 @@ const port = 3000;
 app.use(express.urlencoded({ extended: true }));
 
 // Cross-origin
-app.use(cors);
+app.use(cors());
 
 // Router
 app.use(router);

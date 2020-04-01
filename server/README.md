@@ -23,7 +23,7 @@ _Request Body_
 
 ```
 {
-  "username": <username to post>,
+  "name": <name to post>,
   "password": <password to post>,
 }
 ```
@@ -33,7 +33,7 @@ _Response (201 - Created)_
 ```
 {
   "id": <posted id given by system>,
-  "username": <post username>,
+  "name": <post name>,
   "password": <post password>,
   "updatedAt": "2020-03-31T09:46:41.241Z",
   "createdAt": "2020-03-31T09:46:41.241Z"
@@ -123,7 +123,7 @@ _Request Body_
 
 ```
 {
-  "username": <username to post>,
+  "name": <name to post>,
   "password": <password to post>,
 }
 ```

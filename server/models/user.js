@@ -14,15 +14,15 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    username: {
+    name: {
       allowNull: false,
       type: DataTypes.STRING,
       validate: {
         notEmpty: {
-          msg: "Username cannot be empty"
+          msg: "Name cannot be empty"
         },
         notNull: {
-          msg: "Username cannot be null"
+          msg: "Name cannot be null"
         }
       }
     },
@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Password cannot be null"
         }
       }
+    },
+    use_google: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {});
   User.associate = function (models) {

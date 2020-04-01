@@ -24,7 +24,13 @@ class TodosController {
     // Get all the Todos
     static findAll(req, res, next) {
         const { decodedToken: { UserId } } = req;
-        Todo.findAll({ where: { UserId } })
+        Todo.findAll({
+            where: { UserId }, order: [
+                ['status', 'asc'],
+                ['due_date', 'asc'],
+                ['updatedAt', 'desc'],
+            ]
+        })
             .then(data => {
                 res.status(200).json(data);
             })

@@ -6,16 +6,16 @@ const jwt = require('jsonwebtoken');
 
 class UserController {
     static register(req, res, next) {
-        const { username, password } = req.body;
-        if (!password || !username) throw new WebError({
-            name: 'PasswordOrUsernameNull',
+        const { name, email, password } = req.body;
+        if (!password || !email || !name) throw new WebError({
+            name: 'CredentialsNull',
             status: 400,
-            message: 'Password and Username are required!'
+            message: 'Name, email and password are required!'
         })
         Crypto.hashPassword(password)
             .then((password) => {
                 return User.create(
-                    { username, password }
+                    { name, email, password }
                 )
             })
             .then(data => {
@@ -25,37 +25,41 @@ class UserController {
     }
 
     static login(req, res, next) {
-        const { username, password } = req.body;
-        if (!password || !username) throw new WebError({
-            name: 'PasswordOrUsernameNull',
+        const { email, password } = req.body;
+        if (!password || !email) throw new WebError({
+            name: 'CredentialsNull',
             status: 400,
-            message: 'Password and Username are required!'
+            message: 'Password and Email are required!'
         })
         let userData;
-        User.findOne({ where: { username: username } })
+        User.findOne({ where: { email: email } })
             .then((user) => {
                 if (!user)
                     throw new WebError({
                         name: 'WrongCredentials',
                         status: 400,
-                        message: 'Wrong username and password combination!'
+                        message: 'Wrong email and password combination!'
                     })
                 userData = user;
+                console.log(userData);
                 return Crypto.comparePassword(password, user.password);
             })
             .then(success => {
-                if (success)
+                if (success) {
+                    console.log(userData.id, userData.email, userData.name);
                     res.status(201).json({
                         accessToken: jwt.sign({
                             UserId: userData.id,
-                            username: userData.username
-                        }, privateKey)
+                            email: userData.email
+                        }, privateKey),
+                        name: userData.name
                     });
+                }
                 else
                     throw new WebError({
                         name: 'WrongCredentials',
                         status: 400,
-                        message: 'Wrong username and password combination!'
+                        message: 'Wrong email and password combination!'
                     })
             })
             .catch(next)

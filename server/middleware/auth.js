@@ -8,7 +8,7 @@ class Auth {
         jwt.verify(token, privateKey, function (err, decoded) {
             if (err)
                 throw err;
-            else if (decoded.UserId && decoded.username)
+            else if (decoded.UserId && decoded.name)
                 return decoded;
             else
                 throw new WebError({
@@ -23,7 +23,7 @@ class Auth {
     static authenticate(req, res, next) {
         // console.log({ WebError } = require('../middleware'))
         const { accesstoken } = req.headers;
-        console.log(req.headers)
+        // console.log(req.headers)
         if (!accesstoken)
             throw new WebError({
                 name: 'TokenNull',

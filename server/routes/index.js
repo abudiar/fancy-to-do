@@ -9,8 +9,8 @@ router.use('/todos', require('./todosRoutes'));
 // User page
 router.use('/', require('./userRoutes'));
 
-// User page
-router.use('/test', require('../middleware/auth').authenticate);
+// Social login page
+router.use('/social', require('./socialRoutes'));
 
 // Setup 404 handler
 router.use('*', (req, res) => {

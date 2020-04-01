@@ -3,19 +3,31 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- StyleSheets -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/datepicker.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <!-- Scripts -->
+    <script src="js/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/1f9cbf7c3d.js" crossorigin="anonymous"></script>
-    <script src="js/main.js"></script>
+    <script src="js/datepicker.min.js"></script>
+
+    <meta name="google-signin-client_id"
+        content="142472030354-i6m882420v7cbjtg5ekl08vkm749anap.apps.googleusercontent.com">
+    <!-- <meta name="google-signin-scope" content="profile email"> -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+
     <title>Meh Fancy Ya?</title>
 </head>
 
 <body>
+    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
     <div class="card bg-dark">
         <!-- UserPage -->
-        <div id="UserPage">
+        <div id="UserPage" style="display: none">
             <!-- Login and Register Buttons -->
             <div class="container-switch">
                 <div class="switch-back switch-button"></div>
@@ -29,49 +41,161 @@
                     </button>
                 </div>
             </div>
+            <!-- Login Body -->
             <div class="card-body login transition visible">
-                <!-- Login Body -->
                 <form class="form-login">
                     <div class="form-label-group">
-                        <input type="email" name="inputEmail" class="form-control" placeholder="Email address" required
-                            autofocus>
+                        <input type="email" name="loginEmail" id="loginEmail" class="form-control"
+                            placeholder="Email address" required autofocus>
                     </div>
 
                     <div class="form-label-group">
-                        <input type="password" name="inputPassword" class="form-control" placeholder="Password"
-                            required>
+                        <input type="password" name="loginPassword" id="loginPassword" class="form-control"
+                            placeholder="Password" required>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                    <button id="login" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign
+                        in</button>
                 </form>
                 <hr class="my-4">
-                <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i
-                        class="fab fa-google mr-2"></i> Sign in with Google</button>
+                <!-- <button class="btn btn-lg btn-google btn-block text-uppercase g-signin2" data-onsuccess="onSignIn"
+                    type="submit"><i class="fab fa-google mr-2"></i> Sign in with Google</button> -->
                 <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i
                         class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</button>
             </div>
+            <!-- Register Body -->
             <div class="card-body register transition hidden">
-                <!-- Register Body -->
                 <form class="form-register">
                     <div class="form-label-group">
-                        <input type="string" name="inputUsername" class="form-control" placeholder="Username" required
-                            autofocus>
+                        <input type="string" name="registerName" id="registerName" class="form-control"
+                            placeholder="Name" required autofocus>
                     </div>
 
                     <div class="form-label-group">
-                        <input type="email" name="inputEmail" class="form-control" placeholder="Email address" required>
+                        <input type="email" name="registerEmail" id="registerEmail" class="form-control"
+                            placeholder="Email address" required>
                     </div>
 
                     <div class="form-label-group">
-                        <input type="password" name="inputPassword" class="form-control" placeholder="Password"
-                            required>
+                        <input type="password" name="registerPassword" id="registerPassword" class="form-control"
+                            placeholder="Password" required>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign Up</button>
+                    <button id="register" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign
+                        Up</button>
                 </form>
                 <hr class="my-4">
-                <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i
-                        class="fab fa-google mr-2"></i> Sign up with Google</button>
+                <!-- <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i
+                        class="fab fa-google mr-2"></i> Sign up with Google</button> -->
                 <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i
                         class="fab fa-facebook-f mr-2"></i> Sign up with Facebook</button>
+            </div>
+        </div>
+        <!-- ListPage -->
+        <div id="ListPage" style="display: none;">
+            <nav class="navbar navbar-dark bg-dark justify-content-between" style="padding:30px">
+                <h5 class="logout transition btn-icon"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</h5>
+                <h1 style="color:transparent;cursor:default;">List</h1>
+                <h5 style="color:transparent;cursor:default;"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+                </h5>
+            </nav>
+            <table class="card-body" style="width:100%">
+                <tr>
+                    <th>
+                        <div class="title">
+                            <h1 id="TitleUser"></h1>
+                            <h6 id="SubUser"></h6>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="add-todo title">
+                            <button id="AddTodo" class="btn btn-lg btn-primary btn-block text-uppercase"><i
+                                    class="fas fa-plus"></i></button>
+                        </div>
+                    </th>
+                </tr>
+            </table>
+
+            <ul class="list-group todo-list" style="overflow: hidden; border-radius: 5px;">
+            </ul>
+        </div>
+        <!-- NewPage -->
+        <div id="NewPage" style="display: none">
+            <nav class="navbar navbar-dark bg-dark justify-content-between" style="padding:30px">
+                <h5 class="back transition btn-icon"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</h5>
+                <h1>New Todo</h1>
+                <h5 style="color:transparent;cursor:default;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+                </h5>
+            </nav>
+            <div class="card-body new-todo transition visible">
+                <form class="form-new-todo">
+                    <div class="form-label-group">
+                        <input type="string" name="newTitle" id="newTitle" class="form-control" placeholder="Title"
+                            required autofocus>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="string" name="newDescription" id="newDescription" class="form-control"
+                            placeholder="Description" autofocus>
+                    </div>
+                    <div class="form-label-group">
+                        <input data-toggle="datepicker" id="newDate" class="form-control" placeholder="Due Date"
+                            autofocus>
+                    </div>
+                    <button id="new-todo" class="btn btn-lg btn-primary btn-block text-uppercase"
+                        type="submit">Create</button>
+                </form>
+            </div>
+        </div>
+        <!-- EditPage -->
+        <div id="EditPage" style="display: none">
+            <nav class="navbar navbar-dark bg-dark justify-content-between" style="padding:30px">
+                <h5 class="back transition btn-icon"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</h5>
+                <h1>Edit Todo</h1>
+                <h5 style="color:transparent;cursor:default;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+                </h5>
+            </nav>
+            <div class="card-body edit-todo transition visible">
+                <form class="form-edit-todo">
+                    <div class="form-label-group">
+                        <input type="string" name="editTitle" id="editTitle" class="form-control" placeholder="Title"
+                            required autofocus>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="string" name="editDescription" id="editDescription" class="form-control"
+                            placeholder="Description" autofocus>
+                    </div>
+                    <div class="form-label-group">
+                        <input data-toggle="datepicker" name="editDate" id="editDate" class="form-control"
+                            placeholder="Due Date" autofocus>
+                    </div>
+                    <button id="edit-todo" class="btn btn-lg btn-primary btn-block text-uppercase"
+                        type="submit">Create</button>
+                </form>
+            </div>
+        </div>
+        <!-- TranslatePage -->
+        <div id="TranslatePage" style="display: none">
+            <nav class="navbar navbar-dark bg-dark justify-content-between" style="padding:30px">
+                <h5 class="back transition btn-icon"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</h5>
+                <h1>Translate Todo</h1>
+                <h5 style="color:transparent;cursor:default;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+                </h5>
+            </nav>
+            <div class="card-body translate-todo transition visible">
+                <form class="form-translate-todo">
+                    <div class="form-label-group">
+                        <input type="string" name="translateTitle" id="translateTitle" class="form-control"
+                            placeholder="Title" required autofocus>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="string" name="translateDescription" id="translateDescription" class="form-control"
+                            placeholder="Description" autofocus>
+                    </div>
+                    <div class="form-label-group">
+                        <input data-toggle="datepicker" name="translateDate" id="translateDate" class="form-control"
+                            placeholder="Due Date" autofocus>
+                    </div>
+                    <button id="translate-todo" class="btn btn-lg btn-primary btn-block text-uppercase"
+                        type="submit">Create</button>
+                </form>
             </div>
         </div>
     </div>
@@ -81,6 +205,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
         integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
         crossorigin="anonymous"></script>
+    <script src="js/main.js"></script>
+
 </body>
 
 
