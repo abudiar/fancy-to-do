@@ -1,0 +1,148 @@
+body {
+    padding: 35px;
+    text-align: center;
+    background: rgb(238, 174, 202);
+    background: linear-gradient(49deg, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+}
+
+.transition {
+    transition: 0.3s ease all;
+    /* transition: opacity 0.3s, visibility 0.3s; */
+}
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.login {
+    position: absolute;
+    padding: 20px;
+    width: 100%;
+}
+
+.register {
+    position: absolute;
+    padding: 20px;
+    width: 100%;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+.card-body.forms {
+    padding: 0;
+}
+
+.card {
+    margin: auto;
+    width: 50%;
+    max-width: 800px;
+    min-width: 400px;
+    min-height: 100%;
+    color: whitesmoke;
+    box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.5);
+    padding: 0px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.container-switch {
+    padding-top: 60px;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+}
+
+.switch-back {
+    opacity: 20%;
+    background: #7f7fd5;
+    background: linear-gradient(49deg, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+}
+
+.switch-button {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: absolute;
+    /* border-radius: 25px; */
+    left: 50%;
+    top: 50%;
+    transform: translate3D(-50%, -50%, 0);
+    will-change: transform;
+    z-index: 2 !important;
+    cursor: default;
+    transition: 0.3s ease all;
+    /* border: 1px solid rgba(255, 255, 255, 0.5); */
+}
+
+.switch-button-case {
+    top: 0;
+    display: inline-block;
+    background: none;
+    width: 49%;
+    height: 100%;
+    color: rgba(211, 211, 211, 0.2);
+    position: relative;
+    border: none;
+    transition: 0.3s ease all;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding-bottom: 1px;
+}
+
+.switch-button-case.not-active:hover {
+    color: rgba(211, 211, 211, 0.5);
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: all 0.4s ease 0s;
+}
+
+.switch-button-case:focus {
+    outline: none;
+}
+
+.switch-button .active {
+    color: #151515;
+    background: #343a40;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    /* background: -webkit-linear-gradient( to right, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+    background: -o-linear-gradient( to right, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+    background: -moz-linear-gradient( to right, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+    background-image: linear-gradient( to right, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1); */
+    background-size: 200% 100%;
+    background-position: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    z-index: -1;
+    transition: 0.3s ease-out all;
+    /* border-radius: 25px; */
+    cursor: default;
+}
+
+.switch-button .active-case {
+    color: white;
+}
+
+.switch-button .active-case:hover {
+    cursor: default;
+}
+
+.btn-google {
+    color: white;
+    background-color: #ea4335;
+}
+
+.btn-facebook {
+    color: white;
+    background-color: #3b5998;
+}
