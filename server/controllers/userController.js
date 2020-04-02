@@ -12,16 +12,47 @@ class UserController {
             status: 400,
             message: 'Name, email and password are required!'
         })
-        Crypto.hashPassword(password)
+        User.findOne({ where: { email: email } })
+            .then((user) => {
+                if (!user)
+                    return Crypto.hashPassword(password)
+                else
+                    throw new WebError({
+                        name: 'TrySocials'
+                    })
+            })
             .then((password) => {
                 return User.create(
                     { name, email, password }
                 )
             })
             .then(data => {
-                res.status(201).json(data);
+                return User.findOne({ where: { email: email } })
             })
-            .catch(next)
+            .then((user) => {
+                if (!user)
+                    throw new WebError({
+                        name: 'ConstraintError',
+                        status: 400,
+                        message: 'Constraint Error'
+                    })
+                res.status(201).json({
+                    accessToken: jwt.sign({
+                        UserId: user.id,
+                        email: user.email
+                    }, privateKey),
+                    name: user.name
+                });
+            })
+            .catch(err => {
+                if (err.name === 'TrySocials') {
+                    res.status(400).json({
+                        name: err.name
+                    });
+                }
+                else
+                    next(err);
+            })
     }
 
     static login(req, res, next) {
@@ -41,12 +72,12 @@ class UserController {
                         message: 'Wrong email and password combination!'
                     })
                 userData = user;
-                console.log(userData);
+                // console.log(userData);
                 return Crypto.comparePassword(password, user.password);
             })
             .then(success => {
                 if (success) {
-                    console.log(userData.id, userData.email, userData.name);
+                    // console.log(userData.id, userData.email, userData.name);
                     res.status(201).json({
                         accessToken: jwt.sign({
                             UserId: userData.id,

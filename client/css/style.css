@@ -165,7 +165,9 @@ ul li {
 #AddTodo {
   padding: 20px 0;
   border-radius: 48px;
-  height: 100%;
+  height: 60px;
+  width: 60px;
+  margin-left: auto;
 }
 
 .list-group-item {

@@ -1,6 +1,6 @@
 const { User } = require('../models');
 const { WebError } = require('../middleware');
-const { googleKey, googleClientId } = require('../constants');
+const { privateKey, googleKey, googleClientId } = require('../constants');
 const { Crypto } = require('../helpers');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
@@ -8,36 +8,47 @@ const client = new OAuth2Client(googleClientId);
 
 class SocialController {
     static loginGoogle(req, res, next) {
-        const { token } = req.body;
-        let userData, email, name, picture;
+        const { token, password, email, name } = req.body;
+        let userData;
         client.verifyIdToken({
             idToken: token,
             audiences: googleClientId
         })
             .then((ticket) => {
                 console.log(ticket)
-                const { email, name, picture, sub, jti } = ticket.payload
+                const { email, picture, sub, jti } = ticket.payload
                 userData = {
                     email,
                     name,
-                    password: Crypto.hashPassword(jti),
                     use_google: true
-                };
-                return User.findOne({ where: { email: email } })
+                }
+                if (password)
+                    return Crypto.hashPassword(password);
+                else
+                    return Crypto.hashPassword(jti);
+            })
+            .then((hashPassword) => {
+                userData['password'] = hashPassword;
+                return User.findOne({ where: { email: userData.email } });
             })
             .then((user) => {
+                if (password && email === user.email) {
+                    user.password = userData['password'];
+                    user.save();
+                }
                 if (!user)
                     return User.create(userData)
                 else
                     return user
             })
-            .then(success => {
+            .then(user => {
+                // // console.log(user)
                 res.status(201).json({
                     accessToken: jwt.sign({
-                        UserId: userData.id,
-                        email: userData.email
+                        UserId: user.id,
+                        email: user.email
                     }, privateKey),
-                    name: userData.name
+                    name: user.name
                 });
             })
             .catch(next)

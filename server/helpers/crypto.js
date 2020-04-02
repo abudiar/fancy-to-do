@@ -5,7 +5,7 @@ const saltRounds = 8;
 class Crypto {
     static hashPassword(plainPassword) {
         return new Promise((resolve, reject) => {
-            console.log(plainPassword, saltRounds)
+            // console.log(plainPassword, saltRounds)
             bcrypt.hash(plainPassword, saltRounds, function (err, hash) {
                 return err ? reject(new WebError({
                     name: 'HashFailed',

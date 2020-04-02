@@ -16,14 +16,14 @@ class Auth {
                     status: 401,
                     message: 'Token is not valid!'
                 });
-            // console.log(decoded)
+            // // console.log(decoded)
         });
     }
 
     static authenticate(req, res, next) {
-        // console.log({ WebError } = require('../middleware'))
+        // // console.log({ WebError } = require('../middleware'))
         const { accesstoken } = req.headers;
-        // console.log(req.headers)
+        // // console.log(req.headers)
         if (!accesstoken)
             throw new WebError({
                 name: 'TokenNull',

@@ -16,15 +16,15 @@
 
     <meta name="google-signin-client_id"
         content="142472030354-i6m882420v7cbjtg5ekl08vkm749anap.apps.googleusercontent.com">
-    <!-- <meta name="google-signin-scope" content="profile email"> -->
+    <meta name="google-signin-scope" content="profile email">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/client.js?onload=onLoadCallback"></script>
 
 
     <title>Meh Fancy Ya?</title>
 </head>
 
 <body>
-    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
     <div class="card bg-dark">
         <!-- UserPage -->
         <div id="UserPage" style="display: none">
@@ -57,10 +57,10 @@
                         in</button>
                 </form>
                 <hr class="my-4">
-                <!-- <button class="btn btn-lg btn-google btn-block text-uppercase g-signin2" data-onsuccess="onSignIn"
-                    type="submit"><i class="fab fa-google mr-2"></i> Sign in with Google</button> -->
-                <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i
-                        class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</button>
+                <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i
+                        class="fab fa-google mr-2"></i> Sign in with Google</button>
+                <!-- <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i
+                        class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</!-->
             </div>
             <!-- Register Body -->
             <div class="card-body register transition hidden">
@@ -83,10 +83,10 @@
                         Up</button>
                 </form>
                 <hr class="my-4">
-                <!-- <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i
-                        class="fab fa-google mr-2"></i> Sign up with Google</button> -->
-                <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i
-                        class="fab fa-facebook-f mr-2"></i> Sign up with Facebook</button>
+                <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i
+                        class="fab fa-google mr-2"></i> Sign up with Google</button>
+                <!-- <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i
+                        class="fab fa-facebook-f mr-2"></i> Sign up with Facebook</button> -->
             </div>
         </div>
         <!-- ListPage -->
@@ -197,6 +197,25 @@
                         type="submit">Create</button>
                 </form>
             </div>
+        </div>
+        <!-- AlreadySocialsPage -->
+        <div id="AlreadySocialsPage" style="display: none">
+            <nav class="navbar navbar-dark bg-dark justify-content-between" style="padding:30px">
+                <h5 class="back transition btn-icon"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</h5>
+                <h1>Sign In</h1>
+                <h5 style="color:transparent;cursor:default;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+                </h5>
+            </nav>
+            <div class="card-body socials transition visible">
+                <p>Email already exists with one of these socials!</p>
+                <p>Please login to set your password!</p>
+                <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i
+                        class="fab fa-google mr-2"></i> Sign in with Google</button>
+            </div>
+        </div>
+        <!-- SocialsHolder -->
+        <div id="SocialsHolder" style="display: none">
+            <div id="googleSignInButton" class="g-signin2" data-onsuccess="onSignIn"></div>
         </div>
     </div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"

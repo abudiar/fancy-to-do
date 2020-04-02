@@ -1,6 +1,7 @@
 // const { User } = require('./helpers');
 // requirejs(['helpers/user'], {
 
+let googleUser = {};
 // })
 $(document).ready(function (e) {
     // e.preventDefault();
@@ -46,6 +47,7 @@ $(document).ready(function (e) {
             email: $('#registerEmail').val(),
             password: $('#registerPassword').val()
         }
+
         register(data);
     })
 
@@ -70,13 +72,13 @@ $(document).ready(function (e) {
         e.stopPropagation();
         const id = $(this).attr('class').split('SPLIT')[1];
         const classArr = $(this).attr('class').split(' ');
-        console.log(classArr);
+        // console.log(classArr);
         for (let i in classArr) {
             if (classArr[i].includes('SPLIT'))
                 delete classArr[i];
         }
         const classWithoutId = classArr.join(' ');
-        console.log(classWithoutId);
+        // console.log(classWithoutId);
         $(this).removeClass();
         $(this).addClass(classWithoutId);
 
@@ -96,16 +98,40 @@ $(document).ready(function (e) {
         showNewPage();
     })
 
+    $('.btn-google').click(function () {
+        loginGoogle();
+    })
 
-    // console.log($('.add-todo.title').height())
-    // $('.add-todo.title').css({ 'width': $('.add-todo.title').height() + 'px' });
+    // gapi.load('auth2', function () {
+    //     auth2 = gapi.auth2.getAuthInstance()
+
+    //     // Sign the user in, and then retrieve their ID.
+    //     auth2.signIn().then(function () {
+    //         console.log(auth2.currentUser.get().getBasicProfile());
+    //     });
+    // });
 });
 
 
 // Methods
-function showEditPage(data) {
+function loginGoogle() {
+    var myParams = {
+        'clientid': '142472030354-i6m882420v7cbjtg5ekl08vkm749anap.apps.googleusercontent.com', //You need to set client id
+        'cookiepolicy': 'single_host_origin',
+        'callback': 'onSignIn', //callback function
+        'approvalprompt': 'force',
+        'scope': 'profile email'
+    };
+    gapi.auth.signIn(myParams);
+}
+
+function showAlreadySocialsPage() {
     hideAll();
-    // console.log(data['title'])
+    $('#AlreadySocialsPage').show();
+}
+
+function showEditPage(data) {
+    // // console.log(data['title'])
     $('.form-edit-todo').addClass(`idSPLIT${data['id']}SPLIT`);
     $('#editTitle').val(`${data['title']}`);
     $('#editDescription').val(`${data['description'] ? data['description'] : ''}`);
@@ -121,23 +147,23 @@ function showEditPage(data) {
         });
         $('#editDate').val(formatDateDisplay(data['due_date']));
     }
+    hideAll();
     $('#EditPage').show();
 }
 
 function showNewPage() {
-    hideAll();
-    $('#newTitle').val(null);
-    $('#newDescription').val(null);
-    $('#newDate').val(null);
     $('#newDate').datepicker({
         format: 'dd/mm/yyyy'
     });
+    hideAll();
     $('#NewPage').show();
 }
 
 function showListPage() {
-    hideAll();
-    $('#ListPage').show();
+    showUserPage(); // Make sure to clear user page
+    $('#newTitle').val(null);
+    $('#newDescription').val(null);
+    $('#newDate').val(null);
     $('#TitleUser').html(`Hey ${localStorage.getItem('name')}, `);
     getTodos((data) => {
         $('#SubUser').text(`You have ${data.length} things todo!`);
@@ -198,7 +224,7 @@ function showListPage() {
                 $(this).is(":checked") ?
                     updateTodo(id, { status: 'checked' }, function (e) {
                         showListPage();
-                        console.log(this)
+                        // console.log(this)
                         $(this).click();
                     }) :
                     updateTodo(id, { status: null }, function (e) {
@@ -207,11 +233,11 @@ function showListPage() {
                     });
             }
             else if ($(this).attr('class').includes('check')) {
-                console.log(id, $(this).parent().find('.status').is(":checked"))
+                // console.log(id, $(this).parent().find('.status').is(":checked"))
                 $(this).parent().find('.status').is(":checked") ?
                     updateTodo(id, { status: null }, function (e) {
                         showListPage();
-                        console.log(this)
+                        // console.log(this)
                         $(this).click();
                     }) :
                     updateTodo(id, { status: 'checked' }, function (e) {
@@ -221,9 +247,16 @@ function showListPage() {
             }
         });
     })
+    hideAll();
+    $('#ListPage').show();
 }
 
 function showUserPage() {
+    $('#registerName').val(null);
+    $('#registerEmail').val(null);
+    $('#registerPassword').val(null);
+    $('#loginPassword').val(null);
+    $('#loginEmail').val(null);
     hideAll();
     $('#UserPage').show();
 }
@@ -233,6 +266,7 @@ function hideAll() {
     $('#UserPage').hide();
     $('#NewPage').hide();
     $('#EditPage').hide();
+    $('#AlreadySocialsPage').hide();
 }
 
 function switchLeft() {
@@ -274,27 +308,42 @@ function formatDateDisplay(dateStr) {
 
 function formatDateToDB(dateStr) {
     const dateArr = dateStr.split('/');
-    console.log(`${dateArr[2]}-${dateArr[1]}-${dateArr[0]}`)
+    // console.log(`${dateArr[2]}-${dateArr[1]}-${dateArr[0]}`)
     return `${dateArr[2]}-${dateArr[1]}-${dateArr[0]}`;
 }
 
-function onSignIn(googleUser) {
-    let profile = googleUser.getBasicProfile();
-    let token = googleUser.getAuthResponse().id_token;
-    const data = {
-        token
-    }
-    $.ajax({
-        method: 'POST',
-        url: 'http://localhost:3000/social/google',
-        data
-    })
-        .done(function (response) {
-            login(data);
-        })
-        .fail(function (response) {
-            alert(response.responseText);
-        })
+function onSignIn(AuthResponse) {
+    gapi.client.load('oauth2', 'v2', function () {
+        var request = gapi.client.oauth2.userinfo.get({
+            'userId': 'me'
+        });
+        request.execute(function (resp) {
+            console.log(resp)
+            let token = AuthResponse.id_token;
+            const data = {
+                token,
+                password: $('#registerPassword').val(),
+                email: $('#registerEmail').val(),
+                name: resp.given_name
+            }
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:3000/social/google',
+                data
+            })
+                .done(function (response) {
+                    let { accessToken, name } = response
+                    localStorage.setItem('accessToken', accessToken)
+                    localStorage.setItem('name', name)
+                    showListPage();
+                })
+                .fail(function (response) {
+                    alert(response.responseText);
+                    logout();
+                    showUserPage();
+                })
+        });
+    });
 }
 
 function register(data) {
@@ -304,10 +353,18 @@ function register(data) {
         data
     })
         .done(function (response) {
-            login(data);
+            let { accessToken, name } = response
+            localStorage.setItem('accessToken', accessToken)
+            localStorage.setItem('name', name)
+            showListPage();
         })
         .fail(function (response) {
-            alert(response.responseText);
+            // console.log(response.responseJSON)
+            // console.log(response.responseJSON.name === 'TrySocials')
+            if (response.responseJSON.name === 'TrySocials')
+                showAlreadySocialsPage();
+            else
+                alert(response.responseText);
         })
 }
 
@@ -330,11 +387,10 @@ function login(data) {
 
 function logout() {
     localStorage.removeItem('accessToken');
-    $('#loginEmail').val('');
-    $('#loginPassword').val('');
-    $('#registerName').val('');
-    $('#registerEmail').val('');
-    $('#registerPassword').val('');
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+        // console.log('User signed out.');
+    });
     showUserPage();
 }
 
@@ -383,7 +439,7 @@ function getSingleTodo(id, cb) {
         }
     })
         .done(function (response) {
-            console.log(response)
+            // console.log(response)
             cb(response);
         })
         .fail(function (response) {

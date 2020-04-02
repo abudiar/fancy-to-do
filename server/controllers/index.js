@@ -13,7 +13,7 @@ fs
     .forEach(file => {
         const model = require(path.join(__dirname, file));
         items[model.name] = model;
-        console.log(model.name)
+        // // console.log(model.name)
     });
 
 module.exports = items;

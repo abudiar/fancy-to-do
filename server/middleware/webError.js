@@ -26,7 +26,7 @@ class WebError extends Error {
                 res.status(401).json(err.Error || err);
                 break;
             default:
-                res.status(err.status || 500).json(err.Error || err);
+                res.status(err.status || 500).json('Internal Server Error');
                 break;
         }
     }
