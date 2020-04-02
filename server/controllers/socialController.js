@@ -32,9 +32,18 @@ class SocialController {
                 return User.findOne({ where: { email: userData.email } });
             })
             .then((user) => {
-                if (password && email === user.email) {
-                    user.password = userData['password'];
-                    user.save();
+                if (password) {
+                    if (email === user.email) {
+                        user.password = userData['password'];
+                        user.save();
+                    }
+                    else {
+                        throw new WebError({
+                            name: 'EmailDoesNotMatch',
+                            status: 401,
+                            message: 'Email does not match!'
+                        })
+                    }
                 }
                 if (!user)
                     return User.create(userData)

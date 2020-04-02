@@ -310,6 +310,8 @@ function formatDateToDB(dateStr) {
     return `${dateArr[2]}-${dateArr[1]}-${dateArr[0]}`;
 }
 
+let googleAuthResponse;
+
 function onSignIn(AuthResponse) {
     gapi.client.load('oauth2', 'v2', function () {
         var request = gapi.client.oauth2.userinfo.get({
@@ -318,6 +320,7 @@ function onSignIn(AuthResponse) {
         request.execute(function (resp) {
             console.log(resp)
             let token = AuthResponse.id_token;
+            googleAuthResponse = AuthResponse;
             const data = {
                 token,
                 password: $('#registerPassword').val(),
@@ -333,10 +336,12 @@ function onSignIn(AuthResponse) {
                     let { accessToken, name } = response
                     localStorage.setItem('accessToken', accessToken)
                     localStorage.setItem('name', name)
+                    // toastr.success('Successfully signed in as ' + name);
                     showListPage();
                 })
                 .fail(function (response) {
-                    alert(response.responseText);
+                    toastr.error(response.responseJSON.message, response.responseJSON.name);
+                    // alert(response.responseText);
                     logout();
                     showUserPage();
                 })
@@ -354,6 +359,7 @@ function register(data) {
             let { accessToken, name } = response
             localStorage.setItem('accessToken', accessToken)
             localStorage.setItem('name', name)
+            // toastr.success('Successfully registered ' + name);
             showListPage();
         })
         .fail(function (response) {
@@ -362,7 +368,8 @@ function register(data) {
             if (response.responseJSON.name === 'TrySocials')
                 showAlreadySocialsPage();
             else
-                alert(response.responseText);
+                toastr.error(response.responseText);
+            // alert(response.responseText);
         })
 }
 
@@ -376,23 +383,46 @@ function login(data) {
             let { accessToken, name } = response
             localStorage.setItem('accessToken', accessToken)
             localStorage.setItem('name', name)
+            // toastr.success('Successfully signed in as ' + name);
             showListPage();
         })
         .fail(function (response) {
-            alert(response.responseText);
+            toastr.error(response.responseText);
+            // alert(response.responseText);
         })
 }
 
 function logout() {
     localStorage.removeItem('accessToken');
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-        // console.log('User signed out.');
-    });
+    if (googleAuthResponse)
+        logoutGoogle(googleAuthResponse.access_token);
     showUserPage();
 }
 
+function logoutGoogle(access_token) {
+    let revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token=' +
+        access_token;
 
+    // Perform an asynchronous GET request.
+    $.ajax({
+        type: 'GET',
+        url: revokeUrl,
+        async: false,
+        contentType: "application/json",
+        dataType: 'jsonp',
+        success: function (nullResponse) {
+            // toastr.success('Successfully signed out of Google');
+            // Do something now that user is disconnected
+            // The response is always undefined.
+        },
+        error: function (e) {
+            // Handle the error
+            // console.log(e);
+            // You could point users to manually disconnect if unsuccessful
+            // https://plus.google.com/apps
+        }
+    });
+}
 
 function getTodos(cb) {
     $.ajax({
@@ -497,7 +527,8 @@ function translateTodo(id, data, cb) {
 
 function checkJWT(response) {
     if (response.responseJSON.name == "JsonWebTokenError") {
-        alert('Please login!');
+        // alert('Please login!');
+        toastr.error('Please login!', 'Login failed.');
         logout();
     }
     else
