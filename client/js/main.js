@@ -170,27 +170,25 @@ function showListPage() {
         $('.list-group.todo-list').html('');
         for (let i in data) {
             const newItem = `<li class="list-group-item">
-                <table style="width:100%;color: white;">
+                <table class=" trash transition" style="color: white;position:relative; z-index:5;">
                     <tr>
-                        <th class="button check idSPLIT${data[i]['id']}SPLIT btn-icon" style="padding:20px 25px;">
+                        <th class="button check idSPLIT${data[i]['id']}SPLIT btn-icon" style="padding:20px 25px; z-index:5;">
                             <input type="checkbox" class="form-check-input btn-icon button status idSPLIT${data[i]['id']}SPLIT" style="margin:auto;position:relative;" ${data[i]['status']}>
                         </th>
-                        <th class="button check idSPLIT${data[i]['id']}SPLIT btn-icon" style="padding:20px 25px;width:100%;text-align:center;">
+                        <th class="button check idSPLIT${data[i]['id']}SPLIT btn-icon" style="padding:20px 25px;width:100%;text-align:center; z-index:5;">
                             <h5 class="todo-title ${data[i]['status'] == 'checked' ? 'greyed-out' : ''}"style="margin:0;">${data[i]['title']}</h5>
                             <p class="description transition ${data[i]['status'] == 'checked' ? 'checked' : ''}"" >${data[i]['description'] ? data[i]['description'] : ''}</p>
                         </th>
-                        <th class="button check idSPLIT${data[i]['id']}SPLIT btn-icon ${data[i]['status'] == 'checked' ? 'greyed-out' : ''}" style="padding:20px 25px;">
+                        <th class="button check idSPLIT${data[i]['id']}SPLIT btn-icon ${data[i]['status'] == 'checked' ? 'greyed-out' : ''}" style="padding:20px 25px; z-index:5;">
                             ${data[i]['due_date'] ? formatDateDisplay(data[i]['due_date']) : ''}
-                        </th>
-                        <th style="padding:0;background:rgba(0, 0, 0, 0.15);">
-                            <nav class="navbar trash transition">
-                                <h5 style="margin:0;" class="fas fa-language button transition btn-icon idSPLIT${data[i]['id']}SPLIT"></h5>
-                                <h5 style="margin:0;" class="fas fa-edit button transition btn-icon idSPLIT${data[i]['id']}SPLIT"></h5>
-                                <h5 style="margin:0;" class="fa fa-trash button transition btn-icon idSPLIT${data[i]['id']}SPLIT" aria-hidden="true"></h5>
-                            </nav>
                         </th>
                     </tr>
                 </table>
+                <nav class="navbar" style="position:absolute; z-index:0; right:0; height:100%; top:0%; width:130px; background:rgba(0,0,0, 0.1);">
+                    <h5 style="margin:0;" class="fas fa-language button transition btn-icon idSPLIT${data[i]['id']}SPLIT"></h5>
+                    <h5 style="margin:0;" class="fas fa-edit button transition btn-icon idSPLIT${data[i]['id']}SPLIT"></h5>
+                    <h5 style="margin:0;" class="fa fa-trash button transition btn-icon idSPLIT${data[i]['id']}SPLIT" aria-hidden="true"></h5>
+                </nav>
             </li>`
             $('.list-group.todo-list').append(newItem);
         }

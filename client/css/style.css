@@ -30,12 +30,8 @@ body {
 }
 
 .trash {
-  width: 0px;
-  height: 100%;
-  text-align: center;
-  color: transparent;
-  padding: 0;
-  background: transparent;
+  /* width: 100%; */
+  margin-right: 0px;
 }
 
 .description {
@@ -47,9 +43,7 @@ body {
 }
 
 .trash.selected {
-  width: 130px;
-  color: white;
-  padding: 0 20px;
+  margin-right: 130px;
 }
 
 .description.selected {
@@ -175,6 +169,10 @@ ul li {
   padding: 0;
   border-left: 0;
   border-right: 0;
+}
+
+.check {
+  background: #6c757d;
 }
 
 .card {
