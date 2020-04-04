@@ -185,36 +185,54 @@
             </nav>
             <div class="card-body translate-todo transition visible">
                 <form class="form-translate-todo">
-                    <ul style="padding-left:0;">
-                        <li class="translateData">
-                            <h5>Title</h5>
-                            <p id="translateTitle"></p>
-                            <h5>Description</h5>
-                            <p id="translateDesciption"></p>
-                        </li>
-                        <li class="translateData">
-                            <nav class="navbar navbar-dark bg-dark" style="padding:0">
-                                <select id="translateFrom" class="browser-default custom-select" style="width:auto;">
-                                </select>
-                                <div style="
-                                display: inline-block;
-                                vertical-align: middle;
-                                line-height: normal;">
-                                    <h6 style="margin:0;">To</h6>
-                                </div>
-                                <select id="translateTo" class="browser-default custom-select" style="width:auto;">
-                                </select>
-                            </nav>
-                            <button id="translate-todo" class="btn btn-lg btn-primary btn-block text-uppercase"
-                                style="margin-top:10px" type="submit">Translate</button>
-                        </li>
-                        <li class="translateData">
-                            <h5>Title</h5>
-                            <p id="translatedTitle"></p>
-                            <h5>Description</h5>
-                            <p id="translatedDesciption"></p>
-                        </li>
-                    </ul>
+                    <table style="width:100%; text-align:center;">
+                        <!-- <tr>
+                            <th style="padding: 20px"><select id="translateFrom" class="browser-default custom-select">
+                                </select></th>
+                            <th style="padding: 20px"><select id="translateTo" class="browser-default custom-select">
+                                </select></th>
+                        </tr>
+                        <tr>
+                            <td class="translateData">
+                                <h5>Title</h5>
+                                <p id="translateTitle"></p>
+                                <h5>Description</h5>
+                                <p id="translateDesciption"></p>
+                            </td>
+                            <td class="translateData">
+                                <h5>Title</h5>
+                                <p id="translatedTitle"></p>
+                                <h5>Description</h5>
+                                <p id="translatedDesciption"></p>
+                            </td>
+                        </tr> -->
+                        <tr>
+                            <th class="translateData">
+                                <h5>Title</h5>
+                                <p id="translateTitle"></p>
+                                <h5>Description</h5>
+                                <p id="translateDesciption"></p>
+                            </th>
+                            <th class="translateData">
+                                <h5>Title</h5>
+                                <p id="translatedTitle"></p>
+                                <h5>Description</h5>
+                                <p id="translatedDesciption"></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; padding-bottom: 0;"><select id="translateFrom"
+                                    class="browser-default custom-select">
+                                </select></td>
+                            <td style="padding: 10px; padding-bottom: 0;"><select id="translateTo"
+                                    class="browser-default custom-select">
+                                </select></td>
+                        </tr>
+                    </table>
+                    <div style="padding: 10px; padding-top: 0;">
+                        <button id="translate-todo" class="btn btn-lg btn-primary btn-block text-uppercase"
+                            style="margin-top:10px" type="submit">Translate</button>
+                    </div>
                 </form>
             </div>
         </div>

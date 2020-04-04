@@ -60,9 +60,16 @@ $(document).ready(function (e) {
             translateFrom: $('#translateFrom').val(),
             translateTo: $('#translateTo').val()
         }
-
+        $('#translate-todo').html('Loading...');
+        $('#translate-todo').css('cursor', 'default');
+        $('#translate-todo').prop('disabled', true);
+        $('#translate-todo').css('background', 'gray');
         translateTodo(id, data, (response) => {
             console.log(response);
+            $('#translate-todo').css('cursor', 'pointer');
+            $('#translate-todo').html('Translate');
+            $('#translate-todo').prop('disabled', false);
+            $('#translate-todo').css('background', '');
             $('#translatedTitle').text(response.translated.title)
             $('#translatedDesciption').text(response.translated.description)
         });
