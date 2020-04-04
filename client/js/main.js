@@ -230,8 +230,40 @@ function showListPage() {
     getTodos((data) => {
         $('#SubUser').text(`You have ${data.length} things todo!`);
         $('.list-group.todo-list').html('');
+        $('.list-group.todo-list.late').html('');
+        let numLate = 0;
+        const todaysDate = new Date();
         for (let i in data) {
-            const newItem = `<li class="list-group-item">
+            let todoDate = todaysDate;
+            if (data[i]['due_date'])
+                todoDate = new Date(data[i]['due_date']);
+            if (todoDate < todaysDate) {
+                numLate++;
+                const newItem = `<li class="list-group-item">
+                <table class=" trash transition" style="color: white;position:relative; z-index:5;">
+                    <tr>
+                        <th class="button check late idSPLIT${data[i]['id']}SPLIT btn-icon" style="padding:20px 25px; z-index:5;">
+                            <input type="checkbox" class="form-check-input btn-icon button status idSPLIT${data[i]['id']}SPLIT" style="margin:auto;position:relative;" ${data[i]['status']}>
+                        </th>
+                        <th class="button late idSPLIT${data[i]['id']}SPLIT" style="padding:20px 25px;width:100%;text-align:left; z-index:5;">
+                            <h5 class="todo-title ${data[i]['status'] == 'checked' ? 'greyed-out' : ''}"style="margin:0;">${data[i]['title']}</h5>
+                            <p class="description transition ${data[i]['status'] == 'checked' ? 'checked' : ''}"" >${data[i]['description'] ? data[i]['description'] : ''}</p>
+                        </th>
+                        <th class="button late idSPLIT${data[i]['id']}SPLIT ${data[i]['status'] == 'checked' ? 'greyed-out' : ''}" style="padding:20px 25px; z-index:5;">
+                            ${data[i]['due_date'] ? formatDateDisplay(data[i]['due_date']) : ''}
+                        </th>
+                    </tr>
+                </table>
+                <nav class="navbar" style="position:absolute; z-index:0; right:0; height:100%; top:0%; width:130px; background:rgba(0,0,0, 0.1);">
+                    <h5 style="margin:0;" class="fas fa-language button transition btn-icon idSPLIT${data[i]['id']}SPLIT"></h5>
+                    <h5 style="margin:0;" class="fas fa-edit button transition btn-icon idSPLIT${data[i]['id']}SPLIT"></h5>
+                    <h5 style="margin:0;" class="fa fa-trash button transition btn-icon idSPLIT${data[i]['id']}SPLIT" aria-hidden="true"></h5>
+                </nav>
+            </li>`
+                $('.list-group.todo-list.late').append(newItem);
+            }
+            else {
+                const newItem = `<li class="list-group-item">
                 <table class=" trash transition" style="color: white;position:relative; z-index:5;">
                     <tr>
                         <th class="button check idSPLIT${data[i]['id']}SPLIT btn-icon" style="padding:20px 25px; z-index:5;">
@@ -252,8 +284,12 @@ function showListPage() {
                     <h5 style="margin:0;" class="fa fa-trash button transition btn-icon idSPLIT${data[i]['id']}SPLIT" aria-hidden="true"></h5>
                 </nav>
             </li>`
-            $('.list-group.todo-list').append(newItem);
+                $('.list-group.todo-list.notLate').append(newItem);
+            }
+
         }
+        if (numLate > 0)
+            $('.list-group.todo-list.late').css('margin-bottom', '20px');
         $('.list-group-item').hover(function (e) {
             $('.trash').removeClass("selected");
             $('.description').removeClass("selected");
@@ -599,5 +635,5 @@ function checkJWT(response) {
         logout();
     }
     else
-        alert(response.responseText);
+        toastr.error(response.responseText);
 }

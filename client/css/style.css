@@ -199,6 +199,10 @@ th.button {
   background: #6c757d;
 }
 
+th.button.late {
+  background: #b84343;
+}
+
 .container-switch {
   padding-top: 60px;
   width: 100%;

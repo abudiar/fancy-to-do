@@ -8,7 +8,8 @@ function register(data) {
             login(data);
         })
         .fail(function (response) {
-            alert(response.responseText);
+            // alert(response.responseText);
+            toastr.error(response.responseText);
         })
 }
 
@@ -24,7 +25,8 @@ function login(data) {
             $('#UserPage').hide();
         })
         .fail(function (response) {
-            alert(response.responseText);
+            // alert(response.responseText);
+            toastr.error(response.responseText);
         })
 }
 
