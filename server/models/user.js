@@ -45,6 +45,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.associate = function (models) {
     User.hasMany(models.Todo);
+    User.belongsToMany(models.Group, { through: models.GroupUser });
+    User.hasMany(models.Admin);
+    User.hasMany(models.Invite);
   };
   return User;
 };

@@ -3,17 +3,19 @@ const { WebError } = require('../middleware');
 const axios = require('axios');
 const queryString = require('query-string');
 
-class TodosController {
+class TodoController {
 
     // Insert one Todo
     static insertOne(req, res, next) {
         const {
             decodedToken: { UserId },
-            body: { title, description, status, due_date }
+            body: { title, description, status, due_date },
+            headers: { groupid }
         } = req;
-        Todo.build(
-            { title, description, status, due_date, UserId }
-        )
+        const todoInfo = { title, description, status, due_date, UserId }
+        if (groupid)
+            todoInfo['GroupId'] = groupid;
+        Todo.build(todoInfo)
             .save()
             .then(data => {
                 res.status(201).json(data);
@@ -23,9 +25,18 @@ class TodosController {
 
     // Get all the Todos
     static findAll(req, res, next) {
-        const { decodedToken: { UserId } } = req;
+        const {
+            decodedToken: { UserId },
+            headers: { groupid }
+        } = req;
+        const where = {};
+        if (!groupid)
+            where['GroupId'] = groupid;
+        else
+            where['UserId'] = UserId;
+
         Todo.findAll({
-            where: { UserId }, order: [
+            where, order: [
                 ['status', 'asc'],
                 ['due_date', 'asc'],
                 ['updatedAt', 'desc'],
@@ -244,4 +255,4 @@ class TodosController {
     }
 }
 
-module.exports = TodosController;
+module.exports = TodoController;

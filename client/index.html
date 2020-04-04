@@ -98,8 +98,55 @@
             <nav class="navbar navbar-dark bg-dark justify-content-between" style="padding:30px">
                 <h5 class="logout transition btn-icon"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</h5>
                 <h1 style="color:transparent;cursor:default;">List</h1>
-                <h5 style="color:transparent;cursor:default;"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+                <h5 style="cursor:default;">
                 </h5>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Groups
+                    </button>
+                    <div id="groupMenu" class="dropdown-menu dropdown-menu-right">
+                    </div>
+                </div>
+            </nav>
+            <table class="card-body" style="width:100%">
+                <tr>
+                    <th>
+                        <div class="title">
+                            <h1 id="TitleUser"></h1>
+                            <h6 id="SubUser"></h6>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="add-todo title">
+                            <button id="AddTodo" class="btn btn-lg btn-primary btn-block text-uppercase"><i
+                                    class="fas fa-plus"></i></button>
+                        </div>
+                    </th>
+                </tr>
+            </table>
+
+            <ul class="list-group todo-list late" style="overflow: hidden; border-radius: 5px;">
+            </ul>
+            <ul class="list-group todo-list notLate" style="overflow: hidden; border-radius: 5px;">
+            </ul>
+
+        </div>
+        <!-- GroupPage -->
+        <div id="GroupPage" style="display: none;">
+            <nav class="navbar navbar-dark bg-dark justify-content-between" style="padding:30px">
+                <h5 class="logout transition btn-icon"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</h5>
+                <h1 style="color:transparent;cursor:default;">List</h1>
+                <h5 style="cursor:default;">
+                </h5>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Groups
+                    </button>
+                    <div id="groupMenu" class="dropdown-menu dropdown-menu-right">
+                    </div>
+                </div>
             </nav>
             <table class="card-body" style="width:100%">
                 <tr>

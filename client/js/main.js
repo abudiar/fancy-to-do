@@ -87,7 +87,11 @@ $(document).ready(function (e) {
         if ($('#newDate').val() == '')
             delete data['due_date'];
         addTodo(data, () => {
-            showListPage();
+            const groupId = localStorage.getItem('GroupId');
+            if (groupId)
+                showListPage(groupId);
+            else
+                showListPage();
         });
     })
 
@@ -114,7 +118,11 @@ $(document).ready(function (e) {
         if ($('#editDate').val() == '')
             delete data['due_date'];
         updateTodo(id, data, () => {
-            showListPage();
+            const groupId = localStorage.getItem('GroupId');
+            if (groupId)
+                showListPage(groupId);
+            else
+                showListPage();
         });
     })
 
@@ -221,12 +229,33 @@ function showNewPage() {
     $('#NewPage').show();
 }
 
-function showListPage() {
+function showListPage(groupId) {
+    if (groupId)
+        localStorage.setItem('GroupId', groupId);
+    else
+        localStorage.removeItem('GroupId');
+
     showUserPage(); // Make sure to clear user page
     $('#newTitle').val(null);
     $('#newDescription').val(null);
     $('#newDate').val(null);
     $('#TitleUser').html(`Hey ${localStorage.getItem('name')}, `);
+
+    $('#groupMenu').html('');
+    let numGroups = 0;
+    getGroups(data => {
+        for (let i in data) {
+            numGroups++;
+            $('#groupMenu').append(`<a class="dropdown-item" id="groupId${data[i].id}" href="#">${data[i].name}</a>`);
+            $(`#groupId${data[i].id}`).click(function (e) {
+                showListPage(data[i].id);
+            })
+        }
+        if (numGroups > 0)
+            $('#groupMenu').append(`<div class="dropdown-divider"></div>`);
+        $('#groupMenu').append('<a class="dropdown-item" href="#">Create a new project</a>');
+    })
+
     getTodos((data) => {
         $('#SubUser').text(`You have ${data.length} things todo!`);
         $('.list-group.todo-list').html('');
@@ -527,12 +556,147 @@ function logoutGoogle(access_token) {
     });
 }
 
+function addGroup(cb) {
+    $.ajax({
+        method: 'POST',
+        url: 'http://localhost:3000/groups',
+        headers: {
+            accessToken: localStorage.getItem('accessToken')
+        }
+    })
+        .done(function (response) {
+            cb(response);
+        })
+        .fail(function (response) {
+            checkJWT(response);
+        })
+}
+
+function getGroups(cb) {
+    $.ajax({
+        method: 'GET',
+        url: 'http://localhost:3000/groups',
+        headers: {
+            accessToken: localStorage.getItem('accessToken')
+        }
+    })
+        .done(function (response) {
+            cb(response);
+        })
+        .fail(function (response) {
+            checkJWT(response);
+        })
+}
+
+function deleteGroup(id, cb) {
+    $.ajax({
+        method: 'DELETE',
+        url: `http://localhost:3000/groups/${id}`,
+        headers: {
+            accessToken: localStorage.getItem('accessToken')
+        }
+    })
+        .done(function (response) {
+            cb(response);
+        })
+        .fail(function (response) {
+            checkJWT(response);
+        })
+}
+
+function removeGroupMember(id, memberId, cb) {
+    let url = `http://localhost:3000/groups/${id}/removeMember`
+    if (memberId)
+        url += `/${memberId}`;
+    $.ajax({
+        method: 'DELETE',
+        url,
+        headers: {
+            accessToken: localStorage.getItem('accessToken')
+        }
+    })
+        .done(function (response) {
+            cb(response);
+        })
+        .fail(function (response) {
+            checkJWT(response);
+        })
+}
+
+function getInvites(cb) {
+    $.ajax({
+        method: 'GET',
+        url: 'http://localhost:3000/invites',
+        headers: {
+            accessToken: localStorage.getItem('accessToken')
+        }
+    })
+        .done(function (response) {
+            cb(response);
+        })
+        .fail(function (response) {
+            checkJWT(response);
+        })
+}
+
+function getGroupInvites(cb) {
+    $.ajax({
+        method: 'GET',
+        url: 'http://localhost:3000/invites/group',
+        headers: {
+            accessToken: localStorage.getItem('accessToken'),
+            GroupId: localStorage.getItem('GroupId')
+        }
+    })
+        .done(function (response) {
+            cb(response);
+        })
+        .fail(function (response) {
+            checkJWT(response);
+        })
+}
+
+function addInvite(cb) {
+    $.ajax({
+        method: 'POST',
+        url: 'http://localhost:3000/invites',
+        headers: {
+            accessToken: localStorage.getItem('accessToken'),
+            GroupId: localStorage.getItem('GroupId')
+        }
+    })
+        .done(function (response) {
+            cb(response);
+        })
+        .fail(function (response) {
+            checkJWT(response);
+        })
+}
+
+function deleteInvite(id, cb) {
+    $.ajax({
+        method: 'DELETE',
+        url: `http://localhost:3000/invites/${id}`,
+        headers: {
+            accessToken: localStorage.getItem('accessToken'),
+            GroupId: localStorage.getItem('GroupId')
+        }
+    })
+        .done(function (response) {
+            cb(response);
+        })
+        .fail(function (response) {
+            checkJWT(response);
+        })
+}
+
 function getTodos(cb) {
     $.ajax({
         method: 'GET',
         url: 'http://localhost:3000/todos',
         headers: {
-            accessToken: localStorage.getItem('accessToken')
+            accessToken: localStorage.getItem('accessToken'),
+            GroupId: localStorage.getItem('GroupId'),
         }
     })
         .done(function (response) {
@@ -548,7 +712,8 @@ function addTodo(data, cb) {
         method: 'POST',
         url: 'http://localhost:3000/todos',
         headers: {
-            accessToken: localStorage.getItem('accessToken')
+            accessToken: localStorage.getItem('accessToken'),
+            GroupId: localStorage.getItem('GroupId'),
         },
         data
     })
