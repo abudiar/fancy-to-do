@@ -121,8 +121,14 @@ class TodosController {
 
     static translate(req, res, next) {
         const {
-            params: { id }, query: { translateFrom = 'auto', translateTo = 'en' }
+            params: { id }, query: { translateFrom = 'id', translateTo = 'en' }
         } = req;
+        const original = {},
+            translated = {},
+            matches = {},
+            client = 'tw-ob',
+            dt = 't';
+        let todoData;
         Todo.findOne({
             where: { id }
         })
@@ -133,40 +139,106 @@ class TodosController {
                         status: 404,
                         message: 'Post with id ' + id + ' not found.'
                     });
-                const { title, description, status } = data;
+                todoData = data;
+                const { title } = todoData;
+                // const translateParams = {
+                //     client,
+                //     sl: translateFrom,
+                //     tl: translateTo,
+                //     dt,
+                //     q: title
+                // }
+                // const stringified = queryString.stringify(translateParams);
+                // // console.log(stringified);
+                // return axios({
+                //     method: 'get',
+                //     url: 'https://translate.googleapis.com/translate_a/single?' + stringified,
+                // })
+                original['title'] = title;
                 const translateParams = {
-                    client: 'gtx',
-                    sl: translateFrom,
-                    tl: translateTo,
-                    dt: 't',
-                    q: JSON.stringify({ title, description, status })
+                    q: title,
+                    langpair: `${translateFrom}|${translateTo}`,
                 }
                 const stringified = queryString.stringify(translateParams);
+                // console.log(stringified);
                 return axios({
                     method: 'get',
-                    url: 'https://translate.googleapis.com/translate_a/single?' + stringified,
+                    url: 'https://api.mymemory.translated.net/get?' + stringified,
                 })
             })
             .then(function (response) {
-                try {
-                    const original = JSON.parse(response.data[0][0][1]);
-                    const translated = JSON.parse(response.data[0][0][0]);
-                    const result = {
-                        parameters: {
-                            from: translateFrom,
-                            to: translateTo
-                        },
-                        original,
-                        translated
-                    }
-                    res.status(200).json(result);
-                } catch (err) {
-                    throw new WebError({
-                        name: 'TranslationError',
-                        status: 500,
-                        message: err.message
-                    });
+                console.log(response)
+                translated['title'] = response.data.responseData.translatedText;
+                matches['title'] = response.data.responseData.matches;
+
+                const { description } = todoData;
+                // const translateParams = {
+                //     client,
+                //     sl: translateFrom,
+                //     tl: translateTo,
+                //     dt,
+                //     q: description
+                // }
+                // const stringified = queryString.stringify(translateParams);
+                // return axios({
+                //     method: 'get',
+                //     url: 'https://translate.googleapis.com/translate_a/single?' + stringified,
+                // })
+                original['description'] = description;
+                const translateParams = {
+                    q: description,
+                    langpair: `${translateFrom}|${translateTo}`,
                 }
+                const stringified = queryString.stringify(translateParams);
+                // console.log(stringified);
+                return axios({
+                    method: 'get',
+                    url: 'https://api.mymemory.translated.net/get?' + stringified,
+                })
+            })
+            .then(function (response) {
+                translated['description'] = response.data.responseData.translatedText;
+                matches['description'] = response.data.responseData.matches;
+
+                const { status } = todoData;
+                // const translateParams = {
+                //     client,
+                //     sl: translateFrom,
+                //     tl: translateTo,
+                //     dt,
+                //     q: status
+                // }
+                // const stringified = queryString.stringify(translateParams);
+                // return axios({
+                //     method: 'get',
+                //     url: 'https://translate.googleapis.com/translate_a/single?' + stringified,
+                // })
+                original['status'] = status;
+                const translateParams = {
+                    q: status,
+                    langpair: `${translateFrom}|${translateTo}`,
+                }
+                const stringified = queryString.stringify(translateParams);
+                // console.log(stringified);
+                return axios({
+                    method: 'get',
+                    url: 'https://api.mymemory.translated.net/get?' + stringified,
+                })
+            })
+            .then(function (response) {
+                translated['status'] = response.data.responseData.translatedText;
+                matches['status'] = response.data.responseData.matches;
+
+                const result = {
+                    parameters: {
+                        translateFrom: translateFrom,
+                        translateTo: translateTo,
+                    },
+                    original,
+                    translated,
+                    matches
+                }
+                res.status(200).json(result);
             })
             .catch(next)
     }

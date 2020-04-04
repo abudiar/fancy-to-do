@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=520, initial-scale=1.0" />
 
     <!-- StyleSheets -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@
 <body>
     <div class="card bg-dark">
         <!-- UserPage -->
-        <div id="UserPage" style="display: none">
+        <div id="UserPage" style="display: none;justify-content: center;">
             <!-- Login and Register Buttons -->
             <div class="container-switch">
                 <div class="switch-back switch-button"></div>
@@ -185,20 +185,36 @@
             </nav>
             <div class="card-body translate-todo transition visible">
                 <form class="form-translate-todo">
-                    <div class="form-label-group">
-                        <input type="string" name="translateTitle" id="translateTitle" class="form-control"
-                            placeholder="Title" required autofocus>
-                    </div>
-                    <div class="form-label-group">
-                        <input type="string" name="translateDescription" id="translateDescription" class="form-control"
-                            placeholder="Description" autofocus>
-                    </div>
-                    <div class="form-label-group">
-                        <input data-toggle="datepicker" name="translateDate" id="translateDate" class="form-control"
-                            placeholder="Due Date" autofocus>
-                    </div>
-                    <button id="translate-todo" class="btn btn-lg btn-primary btn-block text-uppercase"
-                        type="submit">Create</button>
+                    <ul style="padding-left:0;">
+                        <li class="translateData">
+                            <h5>Title</h5>
+                            <p id="translateTitle"></p>
+                            <h5>Description</h5>
+                            <p id="translateDesciption"></p>
+                        </li>
+                        <li class="translateData">
+                            <nav class="navbar navbar-dark bg-dark" style="padding:0">
+                                <select id="translateFrom" class="browser-default custom-select" style="width:auto;">
+                                </select>
+                                <div style="
+                                display: inline-block;
+                                vertical-align: middle;
+                                line-height: normal;">
+                                    <h6 style="margin:0;">To</h6>
+                                </div>
+                                <select id="translateTo" class="browser-default custom-select" style="width:auto;">
+                                </select>
+                            </nav>
+                            <button id="translate-todo" class="btn btn-lg btn-primary btn-block text-uppercase"
+                                style="margin-top:10px" type="submit">Translate</button>
+                        </li>
+                        <li class="translateData">
+                            <h5>Title</h5>
+                            <p id="translatedTitle"></p>
+                            <h5>Description</h5>
+                            <p id="translatedDesciption"></p>
+                        </li>
+                    </ul>
                 </form>
             </div>
         </div>
@@ -226,6 +242,7 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"
         integrity="sha256-3blsJd4Hli/7wCQ+bmgXfOdK7p/ZUMtPXY08jmxSSgk=" crossorigin="anonymous"></script>
+    <script src="helpers/langcodes.js"></script>
     <script src="js/main.js"></script>
 
 </body>

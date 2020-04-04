@@ -51,6 +51,23 @@ $(document).ready(function (e) {
         register(data);
     })
 
+    $('.form-translate-todo').submit(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const id = $(this).attr('class').split('SPLIT')[1];
+        const data = {
+            translateFrom: $('#translateFrom').val(),
+            translateTo: $('#translateTo').val()
+        }
+
+        translateTodo(id, data, (response) => {
+            console.log(response);
+            $('#translatedTitle').text(response.translated.title)
+            $('#translatedDesciption').text(response.translated.description)
+        });
+    })
+
     $('.form-new-todo').submit(function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -110,6 +127,10 @@ $(document).ready(function (e) {
     //         console.log(auth2.currentUser.get().getBasicProfile());
     //     });
     // });
+
+    for (let i in langcodes) {
+        console.log(i, langcodes[i]);
+    }
 });
 
 
@@ -123,6 +144,40 @@ function loginGoogle() {
         'scope': 'profile email'
     };
     gapi.auth.signIn(myParams);
+}
+
+function showTranslatePage(data) {
+    const classArr = $('.form-translate-todo').attr('class').split(' ');
+    for (let i in classArr) {
+        if (classArr[i].includes('SPLIT'))
+            delete classArr[i];
+    }
+    const classWithoutId = classArr.join(' ');
+    $('.form-translate-todo').removeClass().addClass(classWithoutId);
+
+    console.log($('#translateFrom').html().length)
+    if ($('#translateFrom').html().length < 50 || $('#translateTo').html().length < 50) {
+        $('#translateFrom').html('');
+        $('#translateTo').html('');
+        const newDFromItem = `<option value="id" selected>Indonesian</option>`
+        const newDToItem = `<option value="en" selected>English</option>`
+        $('#translateFrom').append(newDFromItem);
+        $('#translateTo').append(newDToItem);
+        for (let key in langcodes) {
+            const newFromItem = `<option value="${key}">${langcodes[key]}</option>`
+            const newToItem = `<option value="${key}">${langcodes[key]}</option>`
+            $('#translateFrom').append(newFromItem);
+            $('#translateTo').append(newToItem);
+        }
+    }
+    $('#translateTitle').text(data.title)
+    $('#translatedTitle').text(data.title)
+    $('#translateDesciption').text(data.description)
+    $('#translatedDesciption').text(data.description)
+
+    $('.form-translate-todo').addClass(`idSPLIT${data['id']}SPLIT`);
+    hideAll();
+    $('#TranslatePage').show();
 }
 
 function showAlreadySocialsPage() {
@@ -175,11 +230,11 @@ function showListPage() {
                         <th class="button check idSPLIT${data[i]['id']}SPLIT btn-icon" style="padding:20px 25px; z-index:5;">
                             <input type="checkbox" class="form-check-input btn-icon button status idSPLIT${data[i]['id']}SPLIT" style="margin:auto;position:relative;" ${data[i]['status']}>
                         </th>
-                        <th class="button check idSPLIT${data[i]['id']}SPLIT btn-icon" style="padding:20px 25px;width:100%;text-align:center; z-index:5;">
+                        <th class="button idSPLIT${data[i]['id']}SPLIT" style="padding:20px 25px;width:100%;text-align:left; z-index:5;">
                             <h5 class="todo-title ${data[i]['status'] == 'checked' ? 'greyed-out' : ''}"style="margin:0;">${data[i]['title']}</h5>
                             <p class="description transition ${data[i]['status'] == 'checked' ? 'checked' : ''}"" >${data[i]['description'] ? data[i]['description'] : ''}</p>
                         </th>
-                        <th class="button check idSPLIT${data[i]['id']}SPLIT btn-icon ${data[i]['status'] == 'checked' ? 'greyed-out' : ''}" style="padding:20px 25px; z-index:5;">
+                        <th class="button idSPLIT${data[i]['id']}SPLIT ${data[i]['status'] == 'checked' ? 'greyed-out' : ''}" style="padding:20px 25px; z-index:5;">
                             ${data[i]['due_date'] ? formatDateDisplay(data[i]['due_date']) : ''}
                         </th>
                     </tr>
@@ -207,7 +262,11 @@ function showListPage() {
         $('.button').click(function (e) {
             e.stopPropagation();
             const id = $(this).attr('class').split('SPLIT')[1];
-            if ($(this).attr('class').includes('fa-language'));
+            if ($(this).attr('class').includes('fa-language')) {
+                getSingleTodo(id, (data) => {
+                    showTranslatePage(data);
+                });
+            }
             else if ($(this).attr('class').includes('fa-edit')) {
                 getSingleTodo(id, (data) => {
                     showEditPage(data);
@@ -261,6 +320,7 @@ function showUserPage() {
 
 function hideAll() {
     $('#ListPage').hide();
+    $('#TranslatePage').hide();
     $('#UserPage').hide();
     $('#NewPage').hide();
     $('#EditPage').hide();
